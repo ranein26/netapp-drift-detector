@@ -1,0 +1,15 @@
+exceptions:
+- id: EXC-104
+  resource: nas-prod-01:svm_research:research_archive
+  attribute: snapmirror_destination
+  approved_value: null
+  reason: Approved backup-only archive pattern
+  owner: records@example.com
+  expires: '2026-12-31'
+- id: EXC-088
+  resource: nas-prod-01:svm_research:lims_prod
+  attribute: cifs_acl:Everyone
+  approved_value: full_control
+  reason: Temporary vendor troubleshooting
+  owner: lims-owner@example.com
+  expires: '2026-09-10'

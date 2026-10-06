@@ -1,0 +1,47 @@
+schema_version: '1.0'
+approved_baseline_file: approved_baseline.yaml
+current_config_file: current_config.json
+change_file: approved_changes.csv
+exceptions_file: exceptions.yaml
+severity:
+  open_nfs_write: CRITICAL
+  snapmirror_missing_tier1: CRITICAL
+  snapmirror_lag_breach: HIGH
+  broad_cifs_full_control: HIGH
+  snapshot_policy_drift: MEDIUM
+  tiering_policy_drift: MEDIUM
+  space_guarantee_drift: MEDIUM
+  unmanaged_object: HIGH
+  expired_exception: HIGH
+  data_quality: MEDIUM
+rules:
+  tier1_max_snapmirror_lag_minutes: 15
+  tier2_max_snapmirror_lag_minutes: 240
+  open_clients:
+  - 0.0.0.0/0
+  - '*'
+  broad_principals:
+  - Everyone
+  - Authenticated Users
+  high_risk_cifs_permissions:
+  - full_control
+  - change
+  approved_snapshot_policies:
+  - tier1_hourly
+  - tier2_standard
+  - archive_monthly
+  approved_tiering_policies:
+  - none
+  - snapshot-only
+  - auto
+  - all
+output:
+  formats:
+  - json
+  - csv
+  - html
+  exit_codes:
+    '0': no HIGH or CRITICAL
+    '1': HIGH present
+    '2': CRITICAL present
+    '3': input/configuration error
