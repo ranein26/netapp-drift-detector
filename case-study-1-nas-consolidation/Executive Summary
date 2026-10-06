@@ -1,0 +1,37 @@
+	Executive Summary – Storage Consolidation & Drift Control
+
+Objective: Modernize and consolidate three ageing NetApp ONTAP NAS clusters while reducing cost, separating cold data, and ensuring long term governance through automation and drift detection.
+
+	Key Outcomes
+•	Consolidation: Reduced footprint from 14 nodes to 9 nodes across Singapore, Netherlands, and US.
+•	Cold Data Separation: ~612 TiB of inactive data migrated to AWS S3 (Standard IA for lab/archive, Glacier Deep Archive for legal hold).
+•	Capacity Optimization: Snapshot rationalisation, dedupe/compression, and orphan cleanup reclaimed ~40–45% capacity before hardware purchase.
+
+•	Target Architecture:
+o	Singapore: AFF A400 expansion OR (like AFF C series for capacity optimized workloads).
+o	Netherlands: Sequenced migration after old cluster removal.
+o	US: Hybrid model with FSx for ONTAP + existing A700.
+o	DR redesigned with SnapMirror (EU) and FSx (US).
+•	Automation: Python + Ansible + Terraform + ServiceNow orchestrate discovery, migration waves, cutover, and validation with guardrails.
+•	Governance: Drift detector tool ensures live ONTAP configs remain aligned with Git managed baseline.
+
+	Financial Impact
+•	Baseline (like for like refresh): ~USD 1.4M/year (3 year horizon).
+•	Proposed model: ~USD 0.8M/year.
+•	Savings: ~40–45% reduction in TCO, with improved scalability and governance.
+
+	Risk Mitigation
+•	Data Residency: EU datasets remain in EU regions.
+•	GxP Compliance: Dual validation, audit logs, and controlled change windows.
+•	Operational Guardrails: Dry run mode, blast radius limits, rollback criteria.
+•	Ownership Gap: Automated ServiceNow workflow to resolve missing CMDB owners.
+
+	Strategic Value
+•	Resilient Architecture: Consolidated clusters + cloud tiering ensure performance and compliance.
+•	Repeatable Automation: Migration waves executed safely without manual weekend work.
+•	Governed Operations: Drift detector provides continuous assurance against config drift.
+•	Future Ready: Hybrid on prem + cloud footprint supports growth and regulatory needs.
+Conclusion: This proposal delivers a safer, smaller, and more economical storage estate, cutting costs by nearly half while strengthening compliance and operational governance. The drift detector ensures sustainability of the target state, enabling the organisation to scale confidently.
+
+
+
