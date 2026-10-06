@@ -1,24 +1,72 @@
-from typing import Dict, List
+#from typing import Dict, List
 
-def compare(baseline: Dict, current: Dict) -> List[Dict]:
-    findings = []
+#def compare(baseline: Dict, current: Dict) -> List[Dict]:
+#    findings = []
+ #   for key, expected in baseline.items():
+#        actual = current.get(key)
+#       if actual != expected:
+#           findings.append({
+#                "resource": key,
+#                "expected": expected,
+#                "actual": actual,
+#                "status": "mismatch"
+            })
+    # Detect unexpected keys
+#    for key in current.keys():
+#        if key not in baseline:
+ #           findings.append({
+  #              "resource": key,
+   #             "expected": None,
+#            "actual": current[key],
+#               "status": "unexpected"
+            })
+ #   return findings
+
+from typing import Dict, List, Any
+
+def compare(baseline: Dict[str, Any], current: Dict[str, Any]) -> List[Dict[str, Any]]:
+    """
+    Compare baseline vs current configuration and detect drift.
+    Returns a list of findings with resource, attribute, expected, actual, and status.
+    """
+
+    findings: List[Dict[str, Any]] = []
+
+    # Check for mismatches and missing resources
     for key, expected in baseline.items():
         actual = current.get(key)
-        if actual != expected:
+
+        if actual is None:
+            findings.append({
+                "resource": key,
+                "expected": expected,
+                "actual": None,
+                "status": "missing"
+            })
+        elif actual != expected:
             findings.append({
                 "resource": key,
                 "expected": expected,
                 "actual": actual,
                 "status": "mismatch"
             })
-    # Detect unexpected keys
-    for key in current.keys():
+        else:
+            findings.append({
+                "resource": key,
+                "expected": expected,
+                "actual": actual,
+                "status": "compliant"
+            })
+
+    # Detect unexpected resources present in current config
+    for key, actual in current.items():
         if key not in baseline:
             findings.append({
                 "resource": key,
                 "expected": None,
-                "actual": current[key],
+                "actual": actual,
                 "status": "unexpected"
             })
+
     return findings
 

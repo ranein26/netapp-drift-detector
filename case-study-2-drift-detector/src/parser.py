@@ -17,3 +17,19 @@ def load_csv(path: Path) -> List[Dict[str, Any]]:
         reader = csv.DictReader(f)
         return list(reader)
 
+def normalize(data: dict) -> dict:
+    """
+    Normalize resource keys, booleans, list ordering, and null values.
+    """
+    normalized = {}
+    for k, v in data.items():
+        key = k.lower()  # lowercase keys
+        if isinstance(v, list):
+            v = sorted(v)  # sort lists
+        if isinstance(v, bool):
+            v = str(v).lower()  # normalize booleans
+        if v is None:
+            v = "null"  # replace nulls
+        normalized[key] = v
+    return normalized
+
