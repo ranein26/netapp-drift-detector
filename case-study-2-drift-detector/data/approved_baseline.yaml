@@ -1,0 +1,90 @@
+clusters:
+- name: nas-prod-01
+  svms:
+  - name: svm_research
+    volumes:
+    - name: lims_prod
+      dr_tier: T1
+      snapshot_policy: tier1_hourly
+      tiering_policy: none
+      space_guarantee: volume
+      junction_path: /lims
+      export_policy: ep_lims
+      cifs_share: LIMS$
+      snapmirror_destination: nas-dr-01:svm_dr_research:lims_prod_dr
+    - name: project_data
+      dr_tier: T2
+      snapshot_policy: tier2_standard
+      tiering_policy: auto
+      space_guarantee: none
+      junction_path: /projects
+      export_policy: ep_projects
+      cifs_share: Projects
+      snapmirror_destination: nas-dr-01:svm_dr_research:project_data_dr
+    - name: research_archive
+      dr_tier: T3
+      snapshot_policy: archive_monthly
+      tiering_policy: all
+      space_guarantee: none
+      junction_path: /archive
+      export_policy: ep_archive
+      cifs_share: Archive
+      snapmirror_destination: null
+    export_policies:
+    - name: ep_lims
+      rules:
+      - index: 1
+        clients:
+        - 10.55.10.0/24
+        ro_rule:
+        - sys
+        rw_rule:
+        - sys
+        superuser:
+        - none
+    - name: ep_projects
+      rules:
+      - index: 1
+        clients:
+        - 10.60.0.0/16
+        ro_rule:
+        - sys
+        rw_rule:
+        - sys
+        superuser:
+        - none
+    - name: ep_archive
+      rules:
+      - index: 1
+        clients:
+        - 10.70.20.0/24
+        ro_rule:
+        - sys
+        rw_rule:
+        - never
+        superuser:
+        - none
+    cifs_shares:
+    - name: LIMS$
+      volume: lims_prod
+      acls:
+      - principal: BUILTIN\Administrators
+        permission: full_control
+      - principal: GG-LIMS-RW
+        permission: change
+    - name: Projects
+      volume: project_data
+      acls:
+      - principal: BUILTIN\Administrators
+        permission: full_control
+      - principal: GG-PROJECTS-RW
+        permission: change
+      - principal: GG-PROJECTS-RO
+        permission: read
+    - name: Archive
+      volume: research_archive
+      acls:
+      - principal: BUILTIN\Administrators
+        permission: full_control
+      - principal: GG-ARCHIVE-RO
+        permission: read
