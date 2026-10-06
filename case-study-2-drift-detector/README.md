@@ -36,6 +36,7 @@ It compares current system configurations against a defined baseline and highlig
 ## Usage
 1. Install dependencies:
    ```bash
+
 ## Usage
 pip install -r requirements.txt
-python src/comparator.py --baseline baseline.json --current current.json --output findings/findings.json
+python src/comparator.py --baseline baseline.json --current current.json --output reports/findings.json
