@@ -1,0 +1,58 @@
+Automation Workflow – Migration Orchestration
+
+START
+→ Discovery Phase
+    - Scan source volumes (read-only)
+    - Collect metadata (size, activity, ownership, compliance flags)
+    - Update CMDB baseline
+
+→ Classification Phase
+    - Categorize data: HOT / WARM / COLD / ORPHANED 
+    - Validate signals (access logs, ownership, GxP flags)
+    - Escalate orphaned volumes for approval
+
+→ Planning Phase
+    - Build migration wave plan (by workload type, size, compliance)
+    - Calculate transfer timing (bandwidth windows)
+    - Generate cutover schedule
+    - Approval in ServiceNow
+
+→ Pre-Check Phase
+    - Validate target cluster capacity
+    - Confirm AWS S3 buckets / storage classes exist
+    - Dry-run hash sampling
+    - Abort if checks fail
+
+→ Transfer Phase
+    - Execute SnapMirror for NAS volumes
+    - Execute file-level copy for SMB/DFS
+    - Log progress and errors
+    - Throttle concurrency if bandwidth exceeded
+
+
+→ Cutover Phase
+    - Freeze writes on source
+    - Final sync delta
+    - Switch DNS/DFS mappings
+    - Validate client access
+    - Update CMDB
+
+→ Validation Phase
+    - Integrity check (hash sampling)
+    - Performance check (latency, throughput)
+    - Compliance evidence (GxP logs)
+    - Go/No-Go decision
+
+→ Reporting Phase
+    - Generate migration report (success/failure, metrics)
+    - Store evidence (in ServiceNow)
+    - Notify stakeholders
+
+IF Validation = FAIL
+    → Rollback Phase
+        - Revert DNS/DFS mappings
+        - Restore pre-cutover snapshot
+        - Log incident in ServiceNow
+        - Schedule re-attempt
+
+END
