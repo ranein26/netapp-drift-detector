@@ -4,7 +4,7 @@ from pathlib import Path
 from parser import load_yaml, load_json, load_csv, normalize
 from comparator import compare
 from correlator import correlate
-from reporter import write_json, write_csv, write_html
+from reporter import write_json, write_csv, write_html, determine_exit_code
 
 def main():
     parser = argparse.ArgumentParser(description="NetApp Drift Detector CLI")
@@ -38,9 +38,9 @@ def main():
     write_html(correlated, output_dir)
 
     # Exit code based on standards.yaml
-    exit_code = standards.get("exit_codes", {}).get("default", 1)
+    exit_code = determine_exit_code(correlated, standards)
+    print(f"Reports written to {output_dir}, exiting with code {exit_code}")
     exit(exit_code)
 
 if __name__ == "__main__":
     main()
-
