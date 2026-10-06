@@ -1,0 +1,13 @@
+Risk Register – Enterprise Storage Consolidation
+
+Risk ID	Description	                                                              Impact	Likelihood	Mitigation Strategy	Owner
+R001	  Cold data incorrectly classified as active → excess flash purchase	       High (financial)	Medium	Validate classification with access logs + owner approvals; dry run tiering before commit	Storage Architect
+R002	  Amsterdam rack space unavailable delays consolidation	High (schedule)	     High	Sequence migration to free space first; temporary use of cloud tier until hardware install	Programme Manager
+R003	  GxP data migration fails compliance audit	High (regulatory)            	   Medium	Automate evidence collection; approval gates in ServiceNow; rollback plan	Compliance Lead
+R004	  Bandwidth limits cause missed migration windows	Medium (schedule)	         High	Schedule transfers off hours (10 Gbps); throttle concurrency; prioritize critical workloads	Migration Engineer
+R005	  Ownership gaps (40% volumes) block migration approvals	Medium (operational)	High	Escalation workflow in ServiceNow; assign proxy owners; cleanup orphaned volumes	Data Governance
+R006	  AWS retrieval costs exceed forecast	                                    Medium (financial)	Low	Use Standard IA for retrievable datasets; Glacier only for legal hold; monitor usage monthly	Cloud Ops
+R007	  Team capacity insufficient (4 engineers, BAU + migration)	High (schedule)	 Medium	Automate repetitive tasks; stagger waves; request temporary contractor support	Programme Manager
+R008	  SnapMirror cutover fails → extended downtime	High (service)	         Medium	Dry run cutovers; rollback runbook; blast radius limits per wave	Migration Engineer
+R009	  DFS/ACL misalignment during file level migration	Medium (service)	     Medium	Pre migration ACL audit; test DFS referrals; staged cutover	Storage Engineer
+R010	  EU residency violation if cold data lands in wrong region	              High (regulatory)	Low	Enforce bucket policies; tag datasets with residency flags; audit post migration	Compliance Lead
